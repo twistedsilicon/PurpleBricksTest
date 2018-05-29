@@ -30,7 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ReactTCCCLogic\ReactTCCCLogic.csproj" />
+    <ProjectReference Include="..\ReactTCCCLogic\ReactFrameworkLogic.csproj" />
   </ItemGroup>
 
   <ItemGroup>

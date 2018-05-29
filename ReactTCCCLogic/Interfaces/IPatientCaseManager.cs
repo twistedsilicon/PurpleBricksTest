@@ -1,16 +1,16 @@
 ﻿using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using ReactTCCCLogic.DataObjects;
+using ReactFrameworkLogic.DataObjects;
 
-namespace ReactTCCCLogic.Interfaces
+namespace ReactFrameworkLogic.Interfaces
 {
-    public interface IPatientCaseManager
+    public interface IDatapointContainerManager
     {
-        Task<ObservableCollection<PatientCase>> GetPatientCasesAsync(bool syncItems = false);
-        Task<PatientCase> GetPatientCaseAsync(string caseId); 
-        Task<PatientCase> SavePatientCaseAsync(PatientCase item);
-        Task SavePatientCaseDataPoints(PatientCase item);
-        Task<PatientCase> CreateNewCase();
+        Task<ObservableCollection<DatapointContainer>> GetDatapointContainersAsync(bool syncItems = false);
+        Task<DatapointContainer> GetDatapointContainerAsync(string caseId); 
+        Task<DatapointContainer> SaveDatapointContainerAsync(DatapointContainer item);
+        Task SaveDatapointContainerDatapoints(DatapointContainer item);
+        Task<DatapointContainer> CreateNewDatapointContainer();
         Task SyncAsync();
     }
 }

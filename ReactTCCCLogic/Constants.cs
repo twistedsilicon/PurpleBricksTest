@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ReactTCCCLogic
+namespace ReactFrameworkLogic
 {
     public static class Constants
     {

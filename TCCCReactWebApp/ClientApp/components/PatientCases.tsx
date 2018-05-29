@@ -50,7 +50,7 @@ class FetchPatientCaseData extends React.Component<PatientCasesProps, {}> {
                 </tr>
             </thead>
             <tbody>
-                {this.props.patientCases.map(pc =>
+                {this.props.containerDataPoints.map(pc =>
                     <tr key={pc.getPropertyStringValue('CN')} onClick={() => { this.props.history.replace('/patientCaseDetail/', {patientCase:pc} )  }} >
                         <td>{pc.getPropertyStringValue('CN') }</td>
                         <td>{pc.getPropertyStringValue('PSN') }</td>

@@ -6,50 +6,50 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyModel;
-using ReactTCCCLogic.DataObjects;
-using ReactTCCCLogic.Interfaces;
+using ReactFrameworkLogic.DataObjects;
+using ReactFrameworkLogic.Interfaces;
 
 namespace TCCCReactWebApp.Controllers
 {
     [Produces("application/json")]
-    [Route("api/PatientCase")]
-    public class PatientCaseController : Controller
+    [Route("api/DatapointContainer")]
+    public class DatapointContainerController : Controller
     {
-        private IPatientCaseManager _patientCaseManager;
-        public PatientCaseController(IPatientCaseManager patientCaseManager)
+        private IDatapointContainerManager _datapointContainerManager;
+        public DatapointContainerController(IDatapointContainerManager datapointContainerManager)
         {
-            _patientCaseManager = patientCaseManager;
+            _datapointContainerManager = datapointContainerManager;
         }
-        // GET: api/PatientCase
+        // GET: api/DatapointContainer
         [HttpGet]
-        public async Task<IEnumerable<PatientCase>> Get()
+        public async Task<IEnumerable<DatapointContainer>> Get()
         {
-            return await _patientCaseManager.GetPatientCasesAsync(true);
+            return await _datapointContainerManager.GetDatapointContainersAsync(true);
         }
 
-        // GET: api/PatientCase/5
+        // GET: api/DatapointContainer/5
         [HttpGet("{id}", Name = "Get")]
-        public async Task<PatientCase> Get(string id)
+        public async Task<DatapointContainer> Get(string id)
         {
-            return await _patientCaseManager.GetPatientCaseAsync(id);
+            return await _datapointContainerManager.GetDatapointContainerAsync(id);
         }
-        
-        // POST: api/PatientCase
+
+        // POST: api/DatapointContainer
         [HttpPost]
-        public async Task<PatientCase> Post([FromBody]PatientCase value)
+        public async Task<DatapointContainer> Post([FromBody]DatapointContainer value)
         {
-            PatientCase caseToPost = value;
+            DatapointContainer caseToPost = value;
             if (value.CaseIsNew)
             {
-                caseToPost = await _patientCaseManager.CreateNewCase();
+                caseToPost = await _datapointContainerManager.CreateNewDatapointContainer();
             }
-            caseToPost.MergeDataPoints(value.PatientCaseDataPoints);
-            return await _patientCaseManager.SavePatientCaseAsync(caseToPost);
+            caseToPost.MergeDataPoints(value.ContainerDataPoints);
+            return await _datapointContainerManager.SaveDatapointContainerAsync(caseToPost);
         }
-        
-        // PUT: api/PatientCase/5
+
+        // PUT: api/DatapointContainer/5
         [HttpPut("{id}")]
-        public void Put(string id, [FromBody]PatientCase value)
+        public void Put(string id, [FromBody]DatapointContainer value)
         {
         }
         

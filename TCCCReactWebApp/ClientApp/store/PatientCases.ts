@@ -9,7 +9,7 @@ import DatapointDefinitions from './DataPointDefinitions';
 export interface PatientCaseState {
     isLoading: boolean;
     lastUpdatedAt?: number;
-    patientCases: PatientCase[];
+    containerDataPoints: PatientCase[];
 }
 
 export interface PatientCaseDataPoint {
@@ -28,7 +28,7 @@ export interface PatientCaseDataPoint {
 
 // has to match what we have in ReactTCCCLogic.DataObject.PatientCases
 export interface PatientCase {
-    patientCaseDataPoints: PatientCaseDataPoint[];
+    containerDataPoints: PatientCaseDataPoint[];
     getPropertyStringValue(propName: string): string;
     getCurrentDataPoint(propName: string): PatientCaseDataPoint | undefined;
     createNewDataPoint(propName: string): PatientCaseDataPoint;
@@ -37,18 +37,18 @@ export interface PatientCase {
 class PatientCaseImplementation implements PatientCase {   
     constructor(copy?: PatientCase) {
         if (copy != null)
-            this.patientCaseDataPoints = copy.patientCaseDataPoints;
+            this.containerDataPoints = copy.containerDataPoints;
         else {
-            this.patientCaseDataPoints = [];
+            this.containerDataPoints = [];
         }
     }
-    patientCaseDataPoints: PatientCaseDataPoint[];
+    containerDataPoints: PatientCaseDataPoint[];
 
     getCurrentDataPoint(propName: string): PatientCaseDataPoint | undefined {
         let foundProp: PatientCaseDataPoint | undefined;
         let latestPropCreatedAtTime: Date = new Date(0);
         if (propName) {
-            foundProp = this.patientCaseDataPoints.reduce((previousValue:PatientCaseDataPoint|undefined, currentValue: PatientCaseDataPoint) => {
+            foundProp = this.containerDataPoints.reduce((previousValue:PatientCaseDataPoint|undefined, currentValue: PatientCaseDataPoint) => {
                 if (currentValue.dataPointName.toUpperCase() == propName.toUpperCase() && (previousValue == null || currentValue.createdAt > latestPropCreatedAtTime) ) {
                     latestPropCreatedAtTime = currentValue.createdAt;
                     previousValue = currentValue;
@@ -60,7 +60,7 @@ class PatientCaseImplementation implements PatientCase {
                 //one of our special names
                 if (propName == 'createdAt') {
                     // created at, find the date time that the CN datapoint was created.                   
-                    foundProp = this.patientCaseDataPoints.find((value: PatientCaseDataPoint) => { return value.dataPointName.toUpperCase() == 'CN' });
+                    foundProp = this.containerDataPoints.find((value: PatientCaseDataPoint) => { return value.dataPointName.toUpperCase() == 'CN' });
                 }
             }
         }
@@ -83,7 +83,7 @@ class PatientCaseImplementation implements PatientCase {
         let rv = new PatientCaseImplementation();
         // and Id of empty string indicates this is a new case.
         let cndpd = DatapointDefinitions.CONTAINERNAME;
-        rv.patientCaseDataPoints = [{ id: '', dataPointName: cndpd.dataPointName, stringValue: 'New Case', encoding: cndpd.storeEncoding, createdAt:new Date() }];
+        rv.containerDataPoints = [{ id: '', dataPointName: cndpd.dataPointName, stringValue: 'New Case', encoding: cndpd.storeEncoding, createdAt:new Date() }];
         return rv;       
     }
 
@@ -142,7 +142,7 @@ type KnownAction = RequestPatientCasesAction | ReceivePatientCasesAction | Updat
 export const actionCreators = {
     requestPatientCases: (lastUpdatedAt:number, syncWithServer:boolean): AppThunkAction<KnownAction> => (dispatch, getState) => {
         if (lastUpdatedAt != getState().patientCases.lastUpdatedAt) {
-            let fetchTask = fetch(`api/PatientCase?attemptSync=${syncWithServer}`)
+            let fetchTask = fetch(`api/DatapointContainer?attemptSync=${syncWithServer}`)
                 .catch((e) => { console.log('failed to retrieve case',e)} )
                 .then(response => response.json() as Promise<PatientCase[]>)
                 .then(data => {
@@ -160,7 +160,7 @@ export const actionCreators = {
     },
     updatePatientCase: (patientCase: PatientCase): AppThunkAction<KnownAction> => (dispatch, getState) => {
         if (patientCase) {
-            let updateTask = fetch(`api/PatientCase`, { method: 'post', body: JSON.stringify(patientCase), headers: {'content-type':'application/json'} })
+            let updateTask = fetch(`api/DatapointContainer`, { method: 'post', body: JSON.stringify(patientCase), headers: {'content-type':'application/json'} })
                 .catch((e) => { console.log('failed to update case', e) })
                 .then(response => response.json() as Promise<PatientCase>)
                 .then(data => {
@@ -179,7 +179,7 @@ export const actionCreators = {
 // ----------------
 // REDUCER - For a given state and action, returns the new state. To support time travel, this must not mutate the old state.
 
-const unloadedState: PatientCaseState = { patientCases: [], isLoading: false };
+const unloadedState: PatientCaseState = { containerDataPoints: [], isLoading: false };
 
 export const reducer: Reducer<PatientCaseState> = (state: PatientCaseState, incomingAction: Action) => {
     const action = incomingAction as KnownAction;
@@ -187,18 +187,18 @@ export const reducer: Reducer<PatientCaseState> = (state: PatientCaseState, inco
     switch (action.type) {
         case 'REQUEST_PATIENT_CASES':
             return {
-                patientCases: state.patientCases,
+                containerDataPoints: state.containerDataPoints,
                 lastUpdatedAt: action.lastUpdatedAt,
                 isLoading: true
             };
         case 'RECEIVE_PATIENT_CASES':
                 return {
-                    patientCases: action.patientCases,
+                    containerDataPoints: action.patientCases,
                     lastUpdatedAt: state.lastUpdatedAt,
                     isLoading: false
             };
         case 'UPDATE_PATIENT_CASE':
-            let newArrayOfCases = state.patientCases.slice();
+            let newArrayOfCases = state.containerDataPoints.slice();
             let updatedOrCreatedCase = action.patientCase;
             var createOrUpdateIndex = newArrayOfCases.findIndex((value: PatientCase) => { return value.getPropertyStringValue(cndpd.dataPointName) == updatedOrCreatedCase.getPropertyStringValue(cndpd.dataPointName) });
             if (createOrUpdateIndex != -1) {
@@ -207,7 +207,7 @@ export const reducer: Reducer<PatientCaseState> = (state: PatientCaseState, inco
                 newArrayOfCases.push(action.patientCase);
             }
             return {
-                patientCases: newArrayOfCases,
+                containerDataPoints: newArrayOfCases,
                 lastUpdateAt: state.lastUpdatedAt,
                 isLoading: state.isLoading
             };

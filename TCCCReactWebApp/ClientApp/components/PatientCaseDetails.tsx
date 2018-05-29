@@ -60,8 +60,8 @@ class PatientCaseDetails extends React.Component<PatientCaseDetailsProps, {}> {
             return previousValue;
         },[]);
         if (valuesToUpate.length)
-            this.props.location.state.patientCase.patientCaseDataPoints =
-                this.props.location.state.patientCase.patientCaseDataPoints.concat(valuesToUpate);
+            this.props.location.state.patientCase.containerDataPoints =
+                this.props.location.state.patientCase.containerDataPoints.concat(valuesToUpate);
 
         this.props.updatePatientCase(this.props.location.state.patientCase);
         this.props.history.replace('/patientCases');
@@ -92,7 +92,7 @@ class PatientCaseDetails extends React.Component<PatientCaseDetailsProps, {}> {
             </thead>
             <tbody>
                 {properties.map(pc =>
-                    <tr key={pc.dataPointName}> <td>{pc.fallbackDescription}</td>
+                    <tr key={pc.dataPointName}><td>{pc.fallbackDescription}</td>
                         <td>{this.renderControlforProperty(pc,patientCase)}</td>
                     </tr>)}
             </tbody>

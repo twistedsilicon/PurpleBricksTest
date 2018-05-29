@@ -1,9 +1,9 @@
 using Microsoft.Owin;
 using Owin;
 
-[assembly: OwinStartup(typeof(ReactTCCCService.Startup))]
+[assembly: OwinStartup(typeof(ReactFrameworkService.Startup))]
 
-namespace ReactTCCCService
+namespace ReactFrameworkService
 {
     public partial class Startup
     {

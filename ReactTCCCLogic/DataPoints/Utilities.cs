@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ReactTCCCLogic.DataPoints
+namespace ReactFrameworkLogic.DataPoints
 {
     public static class Utilities
     {

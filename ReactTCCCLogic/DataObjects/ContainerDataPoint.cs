@@ -1,12 +1,12 @@
 ﻿using Newtonsoft.Json;
 using System;
 
-namespace ReactTCCCLogic.DataObjects
+namespace ReactFrameworkLogic.DataObjects
 {
-    public class PatientCaseDataPoint
+    public class ContainerDataPoint
     {
 
-        public PatientCaseDataPoint()
+        public ContainerDataPoint()
         {
             DeviceCreatedAt = DateTimeOffset.UtcNow;
             Id = Guid.NewGuid().ToString();

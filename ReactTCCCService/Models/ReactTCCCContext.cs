@@ -3,11 +3,11 @@ using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
 using Microsoft.Azure.Mobile.Server;
 using Microsoft.Azure.Mobile.Server.Tables;
-using ReactTCCCService.DataObjects;
+using ReactFrameworkService.DataObjects;
 
-namespace ReactTCCCService.Models
+namespace ReactFrameworkService.Models
 {
-    public class ReactTCCCContext : DbContext
+    public class ReactFrameworkDBContext : DbContext
     {
         // You can add custom code to this file. Changes will not be overwritten.
         // 
@@ -18,11 +18,11 @@ namespace ReactTCCCService.Models
 
         private const string connectionStringName = "Name=MS_TableConnectionString";
 
-        public ReactTCCCContext() : base(connectionStringName)
+        public ReactFrameworkDBContext() : base(connectionStringName)
         {
         }
 
-        public System.Data.Entity.DbSet<ReactTCCCService.DataObjects.PatientCaseDataPoint> PatientCaseDataPoints { get; set; }
+        public System.Data.Entity.DbSet<ReactFrameworkService.DataObjects.ContainerDataPoint> ContainerDataPoints { get; set; }
 
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

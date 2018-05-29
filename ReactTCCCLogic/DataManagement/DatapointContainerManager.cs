@@ -15,35 +15,35 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.WindowsAzure.MobileServices;
-using ReactTCCCLogic.DataObjects;
-using ReactTCCCLogic.DataPoints;
-using ReactTCCCLogic.Interfaces;
+using ReactFrameworkLogic.DataObjects;
+using ReactFrameworkLogic.DataPoints;
+using ReactFrameworkLogic.Interfaces;
 #if OFFLINE_SYNC_ENABLED
 using Microsoft.WindowsAzure.MobileServices.SQLiteStore;
 using Microsoft.WindowsAzure.MobileServices.Sync;
 #else
-using ReactTCCLogic.DataObjects;
-using ReactTCCLogic.DataPoints;
+using ReactFrameworkLogic.DataObjects;
+using ReactFrameworkLogic.DataPoints;
 #endif
 
 
-namespace ReactTCCCLogic.DataManagement
+namespace ReactFrameworkLogic.DataManagement
 {
-    public partial class PatientCaseManager : IPatientCaseManager
+    public partial class DatapointContainerManager : IDatapointContainerManager
     {
-        static PatientCaseManager defaultInstance = new PatientCaseManager();
+        static DatapointContainerManager defaultInstance = new DatapointContainerManager();
         MobileServiceClient client;
         readonly DateTimeOffset JAVASCRIPTMINDATE = new DateTimeOffset(1970, 01, 01, 0, 0, 0,new TimeSpan(0));
 
 #if OFFLINE_SYNC_ENABLED
-        IMobileServiceSyncTable<PatientCaseDataPoint> patientCaseDataPointTable;
+        IMobileServiceSyncTable<ContainerDataPoint> containerDataPointTable;
 #else
-        IMobileServiceTable<PatientCaseDataPoint> patientCaseDataPointTable;
+        IMobileServiceTable<ContainerDataPoint> containerDataPointTable;
 #endif
 
         const string offlineDbPath = @"localstore.db";
 
-        private PatientCaseManager()
+        private DatapointContainerManager()
         {
             try
             {
@@ -51,26 +51,26 @@ namespace ReactTCCCLogic.DataManagement
 
 #if OFFLINE_SYNC_ENABLED
                 var store = new MobileServiceSQLiteStore(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), offlineDbPath));
-                store.DefineTable<PatientCaseDataPoint>();
+                store.DefineTable<ContainerDataPoint>();
 
                 //Initializes the SyncContext using the default IMobileServiceSyncHandler.
                 client.SyncContext.InitializeAsync(store);
 
-                patientCaseDataPointTable = client.GetSyncTable<PatientCaseDataPoint>();
+                containerDataPointTable = client.GetSyncTable<ContainerDataPoint>();
 
-                //patientCaseDataPointTable.PurgeAsync();
+                //containerDataPointTable.PurgeAsync();
 #else
-                patientCaseDataPointTable = client.GetTable<PatientCaseDataPoint>();
+                containerDataPointTable = client.GetTable<ContainerDataPoint>();
 #endif
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                System.Diagnostics.Trace.TraceError($"PatientCaseManager.ctor() threw ex - {ex}");
+                System.Diagnostics.Trace.TraceError($"DatapointContainerManager.ctor() threw ex - {ex}");
                 throw;
             }
         }
 
-        public static PatientCaseManager DefaultManager
+        public static DatapointContainerManager DefaultManager
         {
             get
             {
@@ -89,21 +89,21 @@ namespace ReactTCCCLogic.DataManagement
 
         public bool IsOfflineEnabled
         {
-            get { return patientCaseDataPointTable is Microsoft.WindowsAzure.MobileServices.Sync.IMobileServiceSyncTable<PatientCaseDataPoint>; }
+            get { return containerDataPointTable is Microsoft.WindowsAzure.MobileServices.Sync.IMobileServiceSyncTable<ContainerDataPoint>; }
         }
 
-        public async Task<PatientCase> GetPatientCaseAsync(string caseId)
+        public async Task<DatapointContainer> GetDatapointContainerAsync(string caseId)
         {
-            PatientCase rv = new PatientCase();
+            DatapointContainer rv = new DatapointContainer();
 
-            var datapoints = await patientCaseDataPointTable.Where(pcdp =>
+            var datapoints = await containerDataPointTable.Where(pcdp =>
                 pcdp.ParentId == caseId || (pcdp.DataPointName == DataPointDefinitions.CASE_NAME.DataPointName &&
                                             pcdp.Id == caseId)).ToListAsync();
-            rv.PatientCaseDataPoints = datapoints;
+            rv.ContainerDataPoints = datapoints;
             return rv;
         }
 
-        public async Task<ObservableCollection<PatientCase>> GetPatientCasesAsync(bool syncItems = false)
+        public async Task<ObservableCollection<DatapointContainer>> GetDatapointContainersAsync(bool syncItems = false)
         {
             try
             {
@@ -113,23 +113,23 @@ namespace ReactTCCCLogic.DataManagement
                     await this.SyncAsync();
                 }
 #endif
-                ICollection<PatientCaseDataPoint> items = await patientCaseDataPointTable
+                ICollection<ContainerDataPoint> items = await containerDataPointTable
                     //.Where(pcdp => pcdp.ArchivedAt == null)
                     .ToCollectionAsync();
                 var allDataPoints = items;
                 // select all the case names
-                var patientCaseElements = allDataPoints.Where(pcdp => pcdp.DataPointName == DataPointDefinitions.CASE_NAME.DataPointName);
+                var containerElements = allDataPoints.Where(pcdp => pcdp.DataPointName == DataPointDefinitions.CASE_NAME.DataPointName);
 
-                List<PatientCase> patientCases = new List<PatientCase>();
-                foreach (var pce in patientCaseElements)
+                List<DatapointContainer> containers = new List<DatapointContainer>();
+                foreach (var pce in containerElements)
                 {
-                    PatientCase patientCase = new PatientCase();
+                    DatapointContainer container = new DatapointContainer();
 
-                    patientCase.PatientCaseDataPoints = allDataPoints.Where((pcdp => pcdp.ParentId == pce.Id || pcdp == pce)).ToList();
-                    patientCases.Add(patientCase);
+                    container.ContainerDataPoints = allDataPoints.Where((pcdp => pcdp.ParentId == pce.Id || pcdp == pce)).ToList();
+                    containers.Add(container);
                 }
 
-                return new ObservableCollection<PatientCase>(patientCases);
+                return new ObservableCollection<DatapointContainer>(containers);
             }
             catch (MobileServiceInvalidOperationException msioe)
             {
@@ -142,34 +142,34 @@ namespace ReactTCCCLogic.DataManagement
             return null;
         }
 
-        public async Task<PatientCase> SavePatientCaseAsync(PatientCase item)
+        public async Task<DatapointContainer> SaveDatapointContainerAsync(DatapointContainer item)
         {
-            await SavePatientCaseDataPoints(item);
-            return await GetPatientCaseAsync(item.Id);
+            await SaveDatapointContainerDatapoints(item);
+            return await GetDatapointContainerAsync(item.Id);
         }
 
-        public async Task SavePatientCaseDataPoints(PatientCase item)
+        public async Task SaveDatapointContainerDatapoints(DatapointContainer item)
         {
-            foreach (var datapoint in item.PatientCaseDataPoints)
+            foreach (var datapoint in item.ContainerDataPoints)
             {
                 if (datapoint.QueuedAt <= JAVASCRIPTMINDATE)
                 {
                     datapoint.QueuedAt = DateTimeOffset.UtcNow;
-                    await patientCaseDataPointTable.InsertAsync(datapoint);
+                    await containerDataPointTable.InsertAsync(datapoint);
 
                 }
                 else
                 {
                     // nope, we never update a datapoint, we only create new ones!
                     // means we have a track of all the changes made.
-                    //await patientCaseDataPointTable.UpdateAsync(datapoint);
+                    //await containerDataPointTable.UpdateAsync(datapoint);
                 }
             }
         }
 
-        public async Task<PatientCase> CreateNewCase()
+        public async Task<DatapointContainer> CreateNewDatapointContainer()
         {
-            var rv = new PatientCase();
+            var rv = new DatapointContainer();
             await rv.Init();
             return rv;
         }
@@ -183,11 +183,11 @@ namespace ReactTCCCLogic.DataManagement
             {
                 await this.client.SyncContext.PushAsync();
 
-                await this.patientCaseDataPointTable.PullAsync(
+                await this.containerDataPointTable.PullAsync(
                     //The first parameter is a query name that is used internally by the client SDK to implement incremental sync.
                     //Use a different query name for each unique query in your program
-                    "allpatientCaseDataPointItems",
-                    this.patientCaseDataPointTable.CreateQuery());
+                    "allContainerDataPointItems",
+                    this.containerDataPointTable.CreateQuery());
 
             }
             catch (MobileServicePushFailedException exc)

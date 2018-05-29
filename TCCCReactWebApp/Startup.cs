@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using ReactTCCCLogic.DataManagement;
-using ReactTCCCLogic.Interfaces;
+using ReactFrameworkLogic.DataManagement;
+using ReactFrameworkLogic.Interfaces;
 
 namespace TCCCReactWebApp
 {
@@ -25,7 +25,7 @@ namespace TCCCReactWebApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-            services.AddSingleton(typeof(IPatientCaseManager), PatientCaseManager.DefaultManager);
+            services.AddSingleton(typeof(IDatapointContainerManager), DatapointContainerManager.DefaultManager);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

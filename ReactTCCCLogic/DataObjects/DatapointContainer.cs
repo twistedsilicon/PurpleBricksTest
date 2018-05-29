@@ -4,29 +4,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ReactTCCCLogic.DataPoints;
+using ReactFrameworkLogic.DataPoints;
 
-namespace ReactTCCCLogic.DataObjects
+namespace ReactFrameworkLogic.DataObjects
 {
-    public class PatientCase
+    public class DatapointContainer
     {
-        public PatientCase()
+        public DatapointContainer()
         {
-            PatientCaseDataPoints = new List<PatientCaseDataPoint>();
+            ContainerDataPoints = new List<ContainerDataPoint>();
         }
 
         public async Task Init()
         {
             var caseNameDesriptor = DataPointDefinitions.CASE_NAME;
             string caseName = await Utilities.CookNewCaseNameAsync();
-            PatientCaseDataPoints.Add(new PatientCaseDataPoint() { DataPointName = caseNameDesriptor.DataPointName, ParentId = null, Encoding = caseNameDesriptor.StoreEncoding, StringValue = caseName });
+            ContainerDataPoints.Add(new ContainerDataPoint() { DataPointName = caseNameDesriptor.DataPointName, ParentId = null, Encoding = caseNameDesriptor.StoreEncoding, StringValue = caseName });
         }
 
         public string Id
         {
             get
             {
-                return PatientCaseDataPoints.First(pcdp => pcdp.DataPointName == DataPointDefinitions.CASE_NAME.DataPointName).Id.ToString();
+                return ContainerDataPoints.First(pcdp => pcdp.DataPointName == DataPointDefinitions.CASE_NAME.DataPointName).Id.ToString();
             }
         }
 
@@ -34,12 +34,12 @@ namespace ReactTCCCLogic.DataObjects
         {
             get
             {
-                return PatientCaseDataPoints.Any(pcdp => pcdp.DataPointName == DataPointDefinitions.CASE_NAME.DataPointName && !string.IsNullOrEmpty(pcdp.Id));
+                return ContainerDataPoints.Any(pcdp => pcdp.DataPointName == DataPointDefinitions.CASE_NAME.DataPointName && !string.IsNullOrEmpty(pcdp.Id));
             }
         }
 
 
-        public virtual ICollection<PatientCaseDataPoint> PatientCaseDataPoints { get; set; }
+        public virtual ICollection<ContainerDataPoint> ContainerDataPoints { get; set; }
         public bool CaseIsNew
         {
             get
@@ -49,10 +49,10 @@ namespace ReactTCCCLogic.DataObjects
             }
         }
 
-        public void MergeDataPoints(ICollection<PatientCaseDataPoint> patientCaseDataPoints)
+        public void MergeDataPoints(ICollection<ContainerDataPoint> containerDataPoints)
         {
-            List<PatientCaseDataPoint> itemsToAdd = new List<PatientCaseDataPoint>(patientCaseDataPoints.Count);
-            foreach(var pcdp in patientCaseDataPoints.Where(dp=>dp.DataPointName != DataPointDefinitions.CASE_NAME.DataPointName))
+            List<ContainerDataPoint> itemsToAdd = new List<ContainerDataPoint>(containerDataPoints.Count);
+            foreach(var pcdp in containerDataPoints.Where(dp=>dp.DataPointName != DataPointDefinitions.CASE_NAME.DataPointName))
             {
                 if (pcdp.DataPointName != DataPointDefinitions.CASE_NAME.DataPointName)
                 {
@@ -62,9 +62,9 @@ namespace ReactTCCCLogic.DataObjects
                     itemsToAdd.Add(pcdp);
                 }
             }
-            var newDataPoints = this.PatientCaseDataPoints.ToList();
+            var newDataPoints = this.ContainerDataPoints.ToList();
             newDataPoints.AddRange(itemsToAdd);
-            this.PatientCaseDataPoints = newDataPoints;
+            this.ContainerDataPoints = newDataPoints;
         }
     }
 }

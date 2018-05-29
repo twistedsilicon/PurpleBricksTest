@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace ReactTCCCService.DataObjects
+namespace ReactFrameworkService.DataObjects
 {
-    public class PatientCaseDataPoint : EntityData
+    public class ContainerDataPoint : EntityData
     {
         /// <summary>
         /// A short non-human readable string identifying the kind of data it is (forename, bp reading etc)
@@ -23,7 +23,7 @@ namespace ReactTCCCService.DataObjects
         // most things are transmitted as strings, and we should try and keep them that so we don't have to maniuplate them much
         public string StringValue { get; set; }
 
-        // the owning patientcase
+        // the owning container
         public string ParentId { get; set; }
 
         // the utc time on the device

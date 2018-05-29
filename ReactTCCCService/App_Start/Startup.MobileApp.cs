@@ -6,12 +6,12 @@ using System.Web.Http;
 using Microsoft.Azure.Mobile.Server;
 using Microsoft.Azure.Mobile.Server.Authentication;
 using Microsoft.Azure.Mobile.Server.Config;
-using ReactTCCCService.DataObjects;
-using ReactTCCCService.Models;
-using ReactTCCCLogic.DataPoints;
+using ReactFrameworkService.DataObjects;
+using ReactFrameworkService.Models;
 using Owin;
+using ReactFrameworkLogic.DataPoints;
 
-namespace ReactTCCCService
+namespace ReactFrameworkService
 {
     public partial class Startup
     {
@@ -50,9 +50,9 @@ namespace ReactTCCCService
         }
     }
 
-    public class ReactTCCCInitializer : CreateDatabaseIfNotExists<ReactTCCCContext>
+    public class ReactTCCCInitializer : CreateDatabaseIfNotExists<ReactFrameworkDBContext>
     {
-        protected override void Seed(ReactTCCCContext context)
+        protected override void Seed(ReactFrameworkDBContext context)
         {
 
 
@@ -66,7 +66,7 @@ namespace ReactTCCCService
                 new KeyValuePair<DataPointDescriptor, string>(DataPointDefinitions.PATIENT_SURNAME, "Woodruff")
             };
 
-            List<PatientCaseDataPoint> pcdatapoints = new List<PatientCaseDataPoint>(itemsToAdd.Length);
+            List<ContainerDataPoint> pcdatapoints = new List<ContainerDataPoint>(itemsToAdd.Length);
             Guid? caseId = null;
             string parentId = null;
             foreach (var itemToAdd in itemsToAdd)
@@ -80,14 +80,14 @@ namespace ReactTCCCService
                 {
                     parentId = caseId.ToString();
                 }
-                pcdatapoints.Add(new PatientCaseDataPoint { Id = (parentId == null ? caseId.Value : Guid.NewGuid()).ToString(), DeviceCreatedAt = DateTimeOffset.UtcNow, QueuedAt = DateTimeOffset.UtcNow, ParentId = parentId, DataPointName = itemToAdd.Key.DataPointName, Encoding = itemToAdd.Key.StoreEncoding, StringValue = itemToAdd.Value });
+                pcdatapoints.Add(new ContainerDataPoint { Id = (parentId == null ? caseId.Value : Guid.NewGuid()).ToString(), DeviceCreatedAt = DateTimeOffset.UtcNow, QueuedAt = DateTimeOffset.UtcNow, ParentId = parentId, DataPointName = itemToAdd.Key.DataPointName, Encoding = itemToAdd.Key.StoreEncoding, StringValue = itemToAdd.Value });
             };
 
 
 
             foreach (var c in pcdatapoints)
             {
-                context.Set<PatientCaseDataPoint>().Add(c);
+                context.Set<ContainerDataPoint>().Add(c);
             }
 
             base.Seed(context);
