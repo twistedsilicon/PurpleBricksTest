@@ -26,7 +26,8 @@ namespace ReactFrameworkLogic.DataObjects
         {
             get
             {
-                return ContainerDataPoints.First(pcdp => pcdp.DataPointName == DataPointDefinitions.CASE_NAME.DataPointName).Id.ToString();
+                var dp = ContainerDataPoints.FirstOrDefault(pcdp => pcdp.DataPointName == DataPointDefinitions.CASE_NAME.DataPointName);
+                return dp?.Id.ToString();
             }
         }
 
@@ -38,7 +39,7 @@ namespace ReactFrameworkLogic.DataObjects
             }
         }
 
-
+        [JsonProperty(propertyName:"containerDataPoints")]
         public virtual ICollection<ContainerDataPoint> ContainerDataPoints { get; set; }
         public bool CaseIsNew
         {

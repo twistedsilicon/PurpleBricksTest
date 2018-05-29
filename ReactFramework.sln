@@ -14,6 +14,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		readme.md = readme.md
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrangeBlocksWebApp", "OrangeBlocksWebApp\OrangeBlocksWebApp.csproj", "{DF24A81F-9CE2-425F-A964-B34C6C0663CA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -74,6 +76,22 @@ Global
 		{9B0163CB-B7A5-4E2E-ACBD-651E08BEB0E6}.Release|x64.Build.0 = Release|Any CPU
 		{9B0163CB-B7A5-4E2E-ACBD-651E08BEB0E6}.Release|x86.ActiveCfg = Release|Any CPU
 		{9B0163CB-B7A5-4E2E-ACBD-651E08BEB0E6}.Release|x86.Build.0 = Release|Any CPU
+		{DF24A81F-9CE2-425F-A964-B34C6C0663CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF24A81F-9CE2-425F-A964-B34C6C0663CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF24A81F-9CE2-425F-A964-B34C6C0663CA}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{DF24A81F-9CE2-425F-A964-B34C6C0663CA}.Debug|ARM.Build.0 = Debug|Any CPU
+		{DF24A81F-9CE2-425F-A964-B34C6C0663CA}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{DF24A81F-9CE2-425F-A964-B34C6C0663CA}.Debug|x64.Build.0 = Debug|Any CPU
+		{DF24A81F-9CE2-425F-A964-B34C6C0663CA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{DF24A81F-9CE2-425F-A964-B34C6C0663CA}.Debug|x86.Build.0 = Debug|Any CPU
+		{DF24A81F-9CE2-425F-A964-B34C6C0663CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF24A81F-9CE2-425F-A964-B34C6C0663CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF24A81F-9CE2-425F-A964-B34C6C0663CA}.Release|ARM.ActiveCfg = Release|Any CPU
+		{DF24A81F-9CE2-425F-A964-B34C6C0663CA}.Release|ARM.Build.0 = Release|Any CPU
+		{DF24A81F-9CE2-425F-A964-B34C6C0663CA}.Release|x64.ActiveCfg = Release|Any CPU
+		{DF24A81F-9CE2-425F-A964-B34C6C0663CA}.Release|x64.Build.0 = Release|Any CPU
+		{DF24A81F-9CE2-425F-A964-B34C6C0663CA}.Release|x86.ActiveCfg = Release|Any CPU
+		{DF24A81F-9CE2-425F-A964-B34C6C0663CA}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
