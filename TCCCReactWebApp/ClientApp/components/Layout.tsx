@@ -12,6 +12,7 @@ export class Layout extends React.Component<{}, {}> {
                     { this.props.children }
                 </div>
             </div>
+            <footer className='footer'><div className='pull-right'>&copy; Terry Woodruff 2018</div></footer>
         </div>;
     }
 }
