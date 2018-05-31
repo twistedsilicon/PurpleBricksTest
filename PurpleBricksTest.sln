@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 15.0.27428.2027
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactFrameworkService", "ReactTCCCService\ReactFrameworkService.csproj", "{209FA716-A7AD-4095-BD70-C8710FC66FA7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9B0163CB-B7A5-4E2E-ACBD-651E08BEB0E6} = {9B0163CB-B7A5-4E2E-ACBD-651E08BEB0E6}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReactFrameworkLogic", "ReactTCCCLogic\ReactFrameworkLogic.csproj", "{9B0163CB-B7A5-4E2E-ACBD-651E08BEB0E6}"
 EndProject
