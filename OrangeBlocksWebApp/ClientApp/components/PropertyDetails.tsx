@@ -34,15 +34,19 @@ class PropertyDetails extends React.Component<PropertyDetailProps, {}> {
     }
 
     public render() {
+        if (!this.props.location.state) {
+            this.props.history.replace('/');
+            return null;
+        }
+
         let pc = this.props.location.state.property;
-        console.log(this.props.location.state.property);
         if (!pc)
             return <div>No property selected</div>;
         let buttonDivStyle = { float: 'right' };
 
         return <div>
             <h1>Property Ref: {pc.getPropertyStringValue("CN")}</h1>
-            {this.renderPatientCaseDetailData(pc) }
+            {this.renderPropertyDetail(pc) }
             <div style={buttonDivStyle}><button onClick={this.doneButtonClicked}>DONE</button> </div>
         </div>;
     }
@@ -80,7 +84,7 @@ class PropertyDetails extends React.Component<PropertyDetailProps, {}> {
     private renderControlforProperty(pc: DatapointDescriptor, property: Property): JSX.Element {
         return ControlGenerator.CreateControl(pc, property, this.addDataControl);
     } 
-    private renderPatientCaseDetailData(property : Property) {
+    private renderPropertyDetail(property : Property) {
         var properties = [DatapointDefinitions.CONTAINERNAME, DatapointDefinitions.PROPERTYADDRESS1, DatapointDefinitions.PROPERTYADDRESS2, DatapointDefinitions.PROPERTYPOSTCODE, DatapointDefinitions.PROPERTYREGISTEREDON,
         DatapointDefinitions.PROPERTYNUMBERBEDROOMS, DatapointDefinitions.PROPERTYOFFERPRICE];
 

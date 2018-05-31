@@ -25,6 +25,7 @@
     <None Remove="ClientApp\components\ControlGenerator.tsx" />
     <None Remove="ClientApp\components\EditBox.tsx" />
     <None Remove="ClientApp\components\NavigationButton.tsx" />
+    <None Remove="ClientApp\components\SearchHOC.tsx" />
     <None Remove="ClientApp\store\DataPointDefinitions.ts" />
     <None Remove="ClientApp\store\DataPointDescriptor.ts" />
   </ItemGroup>
@@ -36,6 +37,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\components\ControlGenerator.tsx" />
     <TypeScriptCompile Include="ClientApp\components\EditBox.tsx" />
+    <TypeScriptCompile Include="ClientApp\components\SearchHOC.tsx" />
     <TypeScriptCompile Include="ClientApp\store\DataPointDefinitions.ts" />
     <TypeScriptCompile Include="ClientApp\store\DataPointDescriptor.ts" />
   </ItemGroup>

@@ -28,6 +28,18 @@
     color: white;
     text-align: center;
 }
+span.searchHighlight {
+    background-color:yellow;
+    font-weight:bold;
+}
+
+tr.filter-in {
+    visibility:visible;
+}
+tr.filter-out {
+    visibility:collapse;
+    
+}
 
 input:valid {
     border:2px solid black;
