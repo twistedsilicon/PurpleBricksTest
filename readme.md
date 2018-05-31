@@ -4,6 +4,8 @@ This repo contains an implementation Terrys new ReactJS scaffolding, along with 
 
 Is was developed using Visual Studio on a Windows 10 machine running OS Build 17134.34. 
 
+_When you open the PurpleBricksTest.sln, it might take a few minutes to download the Nuget and npm dependancies before you can build_
+
 It originally started life as a framework to base a new example implementation of a previous project - the Tactical Combat Casualty Care (TCCC) functionality; a system designed to help medics in the battlezone track and deal with casualities. 
 
 I've repurposed it a little for a more generalized framework for writing Web apps that use ReactJs as the front end and Azure Mobile App DataServices as the cloud datastore. The main feature point is being able to capture data _OFFLINE_ for transmission/synchronisation when conectivity is available; very useful on a battlefield, a little less so for estate agents!.
